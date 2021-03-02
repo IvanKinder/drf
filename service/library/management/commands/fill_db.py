@@ -7,7 +7,7 @@ from django.core.management import BaseCommand
 from library.models import Author
 from userapp.models import User
 
-JSON_PATH = os.path.join(settings.BASE_DIR, 'service/json')
+JSON_PATH = os.path.join(settings.BASE_DIR, 'library/json')
 
 
 def load_json_data(file_name):
@@ -28,4 +28,4 @@ class Command(BaseCommand):
         for user in users:
             User.objects.create(**user)
 
-        User.objects.create('admin', 'django@geekbrains.local', 'geekbrains', is_superuser=True)
+        # User.objects.create_superuser('admin', 'django@geekbrains.local', 'geekbrains')

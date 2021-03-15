@@ -135,5 +135,48 @@ REST_FRAMEWORK = {
     'DEFAULT_RENDERER_CLASSES': [
         'rest_framework.renderers.JSONRenderer',
         'rest_framework.renderers.BrowsableAPIRenderer',
-    ]
+    ],
+    # 'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 100
+}
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': True,
+    'formatters': {
+        'basic': {
+            'format': '\n%(asctime)s - %(levelname)s - %(module)s - %(message)s'
+        }
+    },
+    'handlers': {
+        'basic': {
+            'level': 'INFO',
+            'class': 'logging.FileHandler',
+            'filename': 'debug.log',
+            'formatter': 'basic'
+        }
+    },
+    'loggers': {
+        'user_auth_log': {
+            'level': 'INFO',
+            'handlers': ['basic']
+        },
+        'service_log': {
+            'level': 'INFO',
+            'handlers': ['basic']
+        },
+        'app_log': {
+            'level': 'INFO',
+            'handlers': ['basic']
+        },
+        'account_log': {
+            'level': 'INFO',
+            'handlers': ['basic']
+        },
+        'error_log': {
+            'level': 'INFO',
+            'handlers': ['basic']
+        }
+    }
 }

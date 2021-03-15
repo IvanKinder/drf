@@ -1,12 +1,14 @@
 from django.db import models
 from datetime import datetime
 from django.utils import timezone
+# import uuid
 
 
 from userapp.models import User
 
 
 class Project(models.Model):
+    # uuid =
     name = models.CharField(max_length=32)
     data_link = models.CharField(max_length=64)
     user = models.ManyToManyField(User)

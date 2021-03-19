@@ -1,5 +1,5 @@
 import React from "react"
-import {Link} from "react-router-dom"
+import {useParams} from "react-router-dom"
 
 
 const AuthorBookItem = ({item}) => {
@@ -20,15 +20,15 @@ const AuthorBookItem = ({item}) => {
 
 const AuthorBookList = ({items}) => {
     let { id } = useParams()
-    let filtered_items = items.filter((item) => item.author.id === id)
+    let filtered_items = items.filter((item) => item.author.id == id)
     return (
         <table>
             <tr>
                 <th>ID</th>
                 <th>NAME</th>
                 <th>AUTHOR</th>
-                {filtered_items.map((item) => <AuthorBookItem item={item} />)}
             </tr>
+            {filtered_items.map((item) => <AuthorBookItem item={item} />)}
         </table>
     )
 }

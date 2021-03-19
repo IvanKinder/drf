@@ -1,10 +1,20 @@
 import React from "react";
 import logo from './logo.svg';
 import './App.css';
-import AuthorList from "./components/Author";
-// import UserList from "./components/User";
-import BookList from "./components/Book";
+import AuthorList from "./components/Author.js";
+import BookList from "./components/Book.js";
 import axios from "axios";
+import {HashRouter, Link, Route, Switch, Redirect} from 'react-router-dom';
+import AuthorBookList from "./components/AuthorBook.js";
+
+
+const NotFound404 = ({ location }) => {
+    return (
+        <div>
+            <h1>Страница по адресу '{location.pathname}' не найдена</h1>
+        </div>
+    )
+}
 
 
 class App extends React.Component{
@@ -20,7 +30,7 @@ class App extends React.Component{
         const books = [book1, book2, book3, book4]
         this.state = {
             'authors': authors,
-            'users': books
+            'books': books
         }
     }
     // componentDidMount() {
@@ -49,9 +59,27 @@ class App extends React.Component{
     render() {
         return (
             <div className="App">
-                <AuthorList authors={this.state.authors} />
-                <br/>
-                <BookList items={this.state.items} />
+                <HashRouter>
+                    <nav>
+                        <ul>
+                            <li>
+                                <Link to='/'>Authors</Link>
+                            </li>
+                            <li>
+                                <Link to='/books'>Books</Link>
+                            </li>
+                        </ul>
+                    </nav>
+                    <Switch>
+                        <Route exact path='/' component={() => <AuthorList authors={this.state.authors} />} />
+                        <Route exact path='/books' component={() => <BookList items={this.state.books} />} />
+                        <Route path='/author/:id'>
+                            <AuthorBookList items={this.state.books} />
+                        </Route>
+                        <Redirect from='/authors' to='/'/>
+                        <Route component={NotFound404} />
+                    </Switch>
+                </HashRouter>
             </div>
         )
     }

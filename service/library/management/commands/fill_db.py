@@ -2,10 +2,10 @@ import json
 import os
 
 from django.conf import settings
+from django.contrib.auth.models import User
 from django.core.management import BaseCommand
 
 from library.models import Author
-from userapp.models import User
 
 JSON_PATH = os.path.join(settings.BASE_DIR, 'library/json')
 

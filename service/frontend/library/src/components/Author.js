@@ -4,11 +4,14 @@ import {Link} from "react-router-dom"
 const AuthorItem = ({author}) => {
     return (
         <tr>
+            {/*<td>*/}
+            {/*    <Link to={`author/${author.uuid}`}>{author.uuid}</Link>*/}
+            {/*</td>*/}
             <td>
-                <Link to={`author/${author.id}`}>{author.id}</Link>
+                {author.first_name}
             </td>
             <td>
-                {author.name}
+                {author.last_name}
             </td>
             <td>
                 {author.birthday_year}
@@ -20,11 +23,14 @@ const AuthorItem = ({author}) => {
 const AuthorList = ({authors}) => {
     return (
         <table>
+            {/*<th>*/}
+            {/*    ID*/}
+            {/*</th>*/}
             <th>
-                ID
+                FIRST NAME
             </th>
             <th>
-                NAME
+                LAST NAME
             </th>
             <th>
                 BIRTHDAY YEAR

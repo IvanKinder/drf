@@ -42,7 +42,6 @@ INSTALLED_APPS = [
     'corsheaders',
     # my
     'library',
-    'userapp',
     'todo',
 ]
 

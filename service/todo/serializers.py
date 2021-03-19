@@ -2,7 +2,7 @@ from rest_framework.serializers import HyperlinkedModelSerializer
 from rest_framework import serializers
 
 from todo.models import Project, ToDo
-from userapp.serializers import UserModelSerializer
+from library.serializers import UserModelSerializer
 
 
 class ProjectSerializer(HyperlinkedModelSerializer):

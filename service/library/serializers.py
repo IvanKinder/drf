@@ -35,7 +35,6 @@ class BookSerializer(HyperlinkedModelSerializer):
         fields = '__all__'
 
 
-
 class UserModelSerializer(HyperlinkedModelSerializer):
 
     class Meta:

@@ -33,11 +33,11 @@ pagination_router = DefaultRouter()
 pagination_router.register('pagenumber', library.views.ArticlePageNumberPaginationViewSet)
 pagination_router.register('limitoffset', library.views.ArticleLimitOffsetPaginationViewSet)
 pagination_router.register('userpagenumber', library.views.UserPageNumberPaginationViewSet)
+pagination_router.register('todolimitoffset', todo.views.ToDoLimitOffsetPaginationViewSet)
 pagination_router.register('userlimitoffset', library.views.UserLimitOffsetPaginationViewSet)
 pagination_router.register('projectpagenumber', todo.views.ProjectPageNumberPaginationViewSet)
 pagination_router.register('projectlimitoffset', todo.views.ProjectLimitOffsetPaginationViewSet)
 pagination_router.register('todopagenumber', todo.views.ToDoPageNumberPaginationViewSet)
-pagination_router.register('todolimitoffset', todo.views.ToDoLimitOffsetPaginationViewSet)
 
 
 urlpatterns = [

@@ -1,5 +1,7 @@
 import sys
 
+from rest_framework.authtoken.views import obtain_auth_token
+
 import library
 import todo
 from todo.views import ProjectViewSet, ToDoViewSet
@@ -42,6 +44,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     path('api/', include(router.urls)),
+    path('api-token-auth/', obtain_auth_token),
     # path('viewsets/', include(router.urls)),
     path('filters/', include(filter_router.urls)),
     path('pagination/', include(pagination_router.urls)),

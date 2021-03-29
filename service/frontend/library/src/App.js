@@ -63,6 +63,7 @@ class App extends React.Component{
 
     logout(){
         this.set_token('')
+        document.location.href = "/login"
     }
 
     get_token_from_storage(){

@@ -9,7 +9,7 @@ import {HashRouter, Link, Route, Switch, Redirect, BrowserRouter} from 'react-ro
 import AuthorBookList from "./components/AuthorBook.js";
 import ProjectList from "./components/Project";
 import ToDoList from "./components/ToDo";
-import LoginForm from "./components/Auth";
+import LoginForm from "./components/Auth.js";
 import Cookies from 'universal-cookie'
 import ToDoProjectList from "./components/ToDoProject";
 
@@ -37,8 +37,24 @@ class App extends React.Component{
         this.state = {
             'authors': [],
             'users': [],
-            'books': []
+            'books': [],
+            'token': '',
+            'my_username': ''
         }
+    }
+
+    get_token(username, password){
+        axios.post('http://127.0.0.1:8000/api-token-auth/', {username: username, password: password})
+            .then(response => {
+                this.set_token(response.data['token'])
+            }).catch(error => alert('Неверный логин или пароль'))
+        this.setState({'my_username': username}, () => this.load_data())
+    }
+
+    set_token(token){
+        const cookies = new Cookies()
+        cookies.set('token', token)
+        this.setState({'token': token}, () => this.load_data())
     }
 
     is_authenticated(){
@@ -55,13 +71,6 @@ class App extends React.Component{
         this.setState({'token': token}, () => this.load_data())
     }
 
-    get_token(username, password){
-        axios.post('http://127.0.0.1:8000/api-token-auth', {username: username, password: password})
-            .then()(response => {
-                this.set_token(response.data['token'])
-            }).catch(error => alert('Неверный логин или пароль'))
-    }
-
     get_headers(){
         let headers = {
             'Content-Type': 'application/json'
@@ -72,8 +81,9 @@ class App extends React.Component{
         return headers
     }
 
-    componentDidMount() {
-        axios.get('http://127.0.0.1:8000/api/authors')
+    load_data() {
+        const headers = this.get_headers()
+        axios.get('http://127.0.0.1:8000/api/authors', {headers})
             .then(response => {
                 const authors = response.data.results
                 this.setState(
@@ -83,7 +93,7 @@ class App extends React.Component{
                 )
             }).catch(error => console.log(error)
         )
-        axios.get('http://127.0.0.1:8000/pagination/userlimitoffset/')
+        axios.get('http://127.0.0.1:8000/pagination/userlimitoffset/', {headers})
                 .then(response => {
                     const users = response.data.results
                     this.setState(
@@ -93,7 +103,7 @@ class App extends React.Component{
                     )
                 }).catch(error => console.log(error)
             )
-    axios.get('http://127.0.0.1:8000/pagination/projectlimitoffset/')
+    axios.get('http://127.0.0.1:8000/pagination/projectlimitoffset/', {headers})
                 .then(response => {
                     const projects = response.data.results
                     this.setState(
@@ -103,7 +113,7 @@ class App extends React.Component{
                     )
                 }).catch(error => console.log(error)
             )
-    axios.get('http://127.0.0.1:8000/pagination/todolimitoffset/')
+    axios.get('http://127.0.0.1:8000/pagination/todolimitoffset/', {headers})
                 .then(response => {
                     const todos = response.data.results
                     this.setState(
@@ -115,15 +125,19 @@ class App extends React.Component{
             )
     }
 
+    componentDidMount() {
+        this.get_token_from_storage()
+    }
+
     render() {
         return (
             <div className="App">
                 <BrowserRouter>
                     <nav>
                         <ul>
-                            {/*<li>*/}
-                            {/*    <Link to='/'>Authors</Link>*/}
-                            {/*</li>*/}
+                            <li>
+                                <Link to='/'>Authors</Link>
+                            </li>
                             <li>
                                 <Link to='/todos'>ToDo</Link>
                             </li>
@@ -133,14 +147,22 @@ class App extends React.Component{
                             <li>
                                 <Link to='/projects'>Projects</Link>
                             </li>
+                            <li>
+                                <Link to='/login'>Login</Link>
+                            </li>
+                            <li>
+                                <Link to='/logout'>{this.state.my_username} Logout</Link>
+                            </li>
                         </ul>
                     </nav>
                     <Switch>
-                        {/*<Route exact path='/' component={() => <AuthorList authors={this.state.authors} />} />*/}
+                        <Route exact path='/' component={() => <AuthorList authors={this.state.authors} />} />
                         <Route exact path='/users' component={() => <UserList users={this.state.users} />} />
                         <Route exact path='/projects' component={() => <ProjectList projects={this.state.projects} />} />
                         <Route exact path='/todos' component={() => <ToDoList todos={this.state.todos} />} />
                         <Route exact path='/login' component={() => <LoginForm get_token={(username, password) => this.get_token(username, password)} />} />
+                        <Route exact path='/logout' component={() => this.logout()} />
+                        {/*<Route exact path='/login' component={() => <LoginForm />} />*/}
                         {/*<Route path='/'>*/}
                         {/*    <ToDoProjectList items={this.state.project} />*/}
                         {/*</Route>*/}

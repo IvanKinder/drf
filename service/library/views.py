@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from rest_framework import permissions
 from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView, DestroyAPIView
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.renderers import JSONRenderer
@@ -14,6 +15,7 @@ log = logging.getLogger('service_log')
 
 
 class AuthorModelViewSet(ModelViewSet):
+    permission_classes = [permissions.IsAuthenticated]
     queryset = Author.objects.all()
     serializer_class = AuthorSerializer
 

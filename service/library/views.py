@@ -9,13 +9,14 @@ from rest_framework.viewsets import ModelViewSet
 import logging
 from .filters import ArticleFilter
 from .models import Author, Biography, Article, Book
-from .serializers import AuthorSerializer, BiographySerializer, ArticleSerializer, BookSerializer, UserModelSerializer
+from .serializers import AuthorSerializer, BiographySerializer, ArticleSerializer, BookSerializer, UserModelSerializer, \
+    BookSerializerBase
 
 log = logging.getLogger('service_log')
 
 
 class AuthorModelViewSet(ModelViewSet):
-    permission_classes = [permissions.IsAuthenticated]
+    # permission_classes = [permissions.IsAuthenticated]
     queryset = Author.objects.all()
     serializer_class = AuthorSerializer
 
@@ -109,6 +110,11 @@ class ArticleParamFilterViewSet(ModelViewSet):
 class BookViewSet(ModelViewSet):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
+
+    def get_serializer_class(self):
+        if self.request.method in ['GET']:
+            return BookSerializer
+        return BookSerializerBase
 
 
 class UserModelViewSet(ModelViewSet):

@@ -53,6 +53,6 @@ class UserModelSerializerVersion2(HyperlinkedModelSerializer):
 
     class Meta:
         model = User
-        fields = ('username', 'email', 'is_staff',)
+        fields = ('username', 'email', 'is_staff', 'is_superuser',)
 
 

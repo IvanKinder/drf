@@ -123,7 +123,6 @@ class UserModelViewSet(ModelViewSet):
 
     def get_serializer_class(self):
         if self.request.version == '2':
-            print('version = 2')
             return UserModelSerializerVersion2
         return UserModelSerializer
 

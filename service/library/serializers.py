@@ -49,3 +49,10 @@ class UserModelSerializer(HyperlinkedModelSerializer):
         fields = ('username', 'email',)
 
 
+class UserModelSerializerVersion2(HyperlinkedModelSerializer):
+
+    class Meta:
+        model = User
+        fields = ('username', 'email', 'is_staff',)
+
+

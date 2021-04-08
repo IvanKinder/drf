@@ -10,7 +10,7 @@ import logging
 from .filters import ArticleFilter
 from .models import Author, Biography, Article, Book
 from .serializers import AuthorSerializer, BiographySerializer, ArticleSerializer, BookSerializer, UserModelSerializer, \
-    BookSerializerBase
+    BookSerializerBase, UserModelSerializerVersion2
 
 log = logging.getLogger('service_log')
 
@@ -120,6 +120,12 @@ class BookViewSet(ModelViewSet):
 class UserModelViewSet(ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserModelSerializer
+
+    def get_serializer_class(self):
+        if self.request.version == '2':
+            print('version = 2')
+            return UserModelSerializerVersion2
+        return UserModelSerializer
 
 
 class UserPageNumberPaginationViewSet(ModelViewSet):

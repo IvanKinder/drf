@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'corsheaders',
     'drf_yasg',
+    'graphene_django',
     # my
     'library',
     'todo',
@@ -192,4 +193,8 @@ LOGGING = {
             'handlers': ['basic']
         }
     }
+}
+
+GRAPHENE = {
+    'SCHEMA': 'service.schema.schema'
 }

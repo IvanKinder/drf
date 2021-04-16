@@ -15,6 +15,25 @@ class AuthorType(DjangoObjectType):
         fields = '__all__'
 
 
+class AuthorMutation(graphene.Mutation):
+    class Arguments:
+        birthday_year = graphene.Int(required=True)
+        uuid = graphene.UUID()
+
+    author = graphene.Field(AuthorType)
+
+    @classmethod
+    def mutate(cls, root, info, birthday_year, uuid):
+        author = Author.objects.get(uuid=uuid)
+        author.birthday_year = birthday_year
+        author.save()
+        return AuthorMutation(author=author)
+
+
+class Mutation(graphene.ObjectType):
+    update_author = AuthorMutation.Field()
+
+
 class Query(graphene.ObjectType):
     all_books = graphene.List(BookType)
     all_authors = graphene.List(AuthorType)
@@ -44,4 +63,4 @@ class Query(graphene.ObjectType):
             return Book.objects.all()
 
 
-schema = graphene.Schema(query=Query)
+schema = graphene.Schema(query=Query, mutation=Mutation)

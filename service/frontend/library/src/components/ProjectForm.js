@@ -1,11 +1,11 @@
 import React from 'react'
 
 
-class BookForm extends React.Component {
+class ProjectForm extends React.Component {
     constructor(props) {
       super(props)
-      this.state = {name: '', author: props.authors[0]}
-      // console.log(props.authors[0].uuid)
+      this.state = {name: '', data_link: '', user: ''}
+      console.log(props)
     }
 
     handleChange(event)
@@ -19,8 +19,9 @@ class BookForm extends React.Component {
 
     handleSubmit(event) {
       console.log(this.state.name)
-      console.log(this.state.author)
-      this.props.createBook(this.state.name, this.state.author)
+      console.log(this.state.data_link)
+      console.log(this.state)
+      this.props.createProject(this.state.name, this.state.data_link, this.state.user)
       event.preventDefault()
     }
 
@@ -28,14 +29,19 @@ class BookForm extends React.Component {
       return (
         <form onSubmit={(event)=> this.handleSubmit(event)}>
             <div className="form-group">
-            <label for="login">name</label>
+            <label for="name">name</label>
                 <input type="text" className="form-control" name="name" value={this.state.name} onChange={(event)=>this.handleChange(event)} />
             </div>
 
-        <div className="form-group">
-            <label for="author">author</label>
-            <select name='author' className='form-control' onChange={(event) => this.handleChange(event)}>
-                {this.props.authors.map((item)=><option value={item}>{item.last_name}</option> )}
+            <div className="form-group">
+            <label for="data_link">data_link</label>
+                <input type="text" className="form-control" name="data_link" value={this.state.data_link} onChange={(event)=>this.handleChange(event)} />
+            </div>
+
+            <div className="form-group">
+            <label for="user">user</label>
+            <select name='user' className='form-control' onChange={(event) => this.handleChange(event)}>
+                {this.props.users.map((item)=><option value={item}>{item.username}</option> )}
             </select>
             {/*<input type="text" className="form-control" name="author" value={this.state.author} onChange={(event)=>this.handleChange(event)} />*/}
 
@@ -47,4 +53,4 @@ class BookForm extends React.Component {
     }
   }
 
-  export default BookForm
+  export default ProjectForm

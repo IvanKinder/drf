@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User
-from rest_framework import permissions
+from rest_framework import permissions, status
+from rest_framework.exceptions import ValidationError
 from rest_framework.generics import CreateAPIView, ListAPIView, RetrieveAPIView, DestroyAPIView
 from rest_framework.pagination import LimitOffsetPagination
 from rest_framework.renderers import JSONRenderer
@@ -115,6 +116,17 @@ class BookViewSet(ModelViewSet):
         if self.request.method in ['GET']:
             return BookSerializerBase
         return BookSerializer
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        print(request.data)
+        try:
+            serializer.is_valid(raise_exception=True)
+        except ValidationError as err:
+            print(err)
+        self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED, headers=headers)
 
 
 class UserModelViewSet(ModelViewSet):

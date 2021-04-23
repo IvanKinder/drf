@@ -13,6 +13,9 @@ import LoginForm from "./components/Auth.js";
 import Cookies from 'universal-cookie'
 import ToDoProjectList from "./components/ToDoProject";
 import BookForm from "./components/BookForm";
+import ProjectForm from "./components/ProjectForm";
+import ToDoForm from "./components/ToDoForm";
+import SearchForm from "./components/SearchForm";
 
 
 const NotFound404 = ({ location }) => {
@@ -39,6 +42,8 @@ class App extends React.Component{
             'authors': [],
             'users': [],
             'books': [],
+            'projects': [],
+            'todos': [],
             'token': '',
             'my_username': ''
         }
@@ -104,17 +109,61 @@ class App extends React.Component{
             }).catch(error => console.log(error))
     }
 
-  //   createBook(name, author) {
-  //   const headers = this.get_headers()
-  //   const data = {name: name, author: author}
-  //   axios.post(`http://127.0.0.1:8000/api/books/`, data, {headers, headers})
-  //       .then(response => {
-  //         let new_book = response.data
-  //         const author = this.state.authors.filter((item) => item.id === new_book.author)[0]
-  //         new_book.author = author
-  //         this.setState({books: [...this.state.books, new_book]})
-  //       }).catch(error => console.log(error))
-  // }
+    deleteProject(id){
+        const headers = this.get_headers()
+        axios.delete(`http://127.0.0.1:8000/pagination/projectlimitoffset/${id}`, {headers})
+            .then(response => {
+                this.setState({projects: this.state.projects.filter((project) => project.id !== id)})
+            }).catch(error => console.log(error))
+    }
+
+    createProject(name, data_link, user){
+        const headers = this.get_headers()
+        const data = {name: name, data_link: data_link, user: user}
+        axios.post('http://127.0.0.1:8000/pagination/projectlimitoffset/', data, {headers})
+            .then(response => {
+                let new_project = response.data
+                const user = this.state.users.filter((item) => item.id === new_project.user)[0]
+                console.log(user)
+                new_project.user = user
+                this.setState({projects: [...this.state.projects, new_project]})
+            }).catch(error => console.log(error))
+    }
+
+    deleteToDo(id){
+        const headers = this.get_headers()
+        axios.delete(`http://127.0.0.1:8000/pagination/todopagenumber/${id}`, {headers})
+            .then(response => {
+                this.setState({todos: this.state.todos.filter((todo) => todo.id !== id)})
+            }).catch(error => console.log(error))
+    }
+
+    createToDo(project, text, created_at, updated_at, user, is_active){
+        const headers = this.get_headers()
+        const data = {project: project, text: text, created_at: created_at, updated_at: updated_at, user: user, is_active: is_active}
+        axios.post('http://127.0.0.1:8000/pagination/todopagenumber/', data, {headers})
+            .then(response => {
+                let new_todo = response.data
+                const user = this.state.users.filter((item) => item.id === new_todo)[0]
+                const project = this.state.projects.filter((item) => item.id === new_todo)[0]
+                console.log(user)
+                new_todo.user = user
+                new_todo.project = user
+                this.setState({todos: [...this.state.todos, new_todo]})
+            }).catch(error => console.log(error))
+    }
+
+    searchProject(project_name){
+        for (let i=0; i<this.state.projects.length; i++){
+            if (this.state.projects[i].name.includes(project_name)){
+                document.write(
+                    `<p>` +
+                        this.state.projects[i].name +
+                    `</p>`)
+            }
+        }
+        console.log(project_name)
+    }
 
     load_data() {
         const headers = this.get_headers()
@@ -201,17 +250,22 @@ class App extends React.Component{
                             <li>
                                 <Link to='/logout'>{this.state.my_username} Logout</Link>
                             </li>
+                            <hr></hr>
+                                <Link to='/search'>Search</Link>
                         </ul>
                     </nav>
                     <Switch>
                         <Route exact path='/' component={() => <AuthorList authors={this.state.authors} />} />
                         <Route exact path='/users' component={() => <UserList users={this.state.users} />} />
-                        <Route exact path='/projects' component={() => <ProjectList projects={this.state.projects} />} />
-                        <Route exact path='/todos' component={() => <ToDoList todos={this.state.todos} />} />
+                        <Route exact path='/todos' component={() => <ToDoList todos={this.state.todos} deleteToDo={(id)=>this.deleteToDo(id)} />} />
                         <Route exact path='/login' component={() => <LoginForm get_token={(username, password) => this.get_token(username, password)} />} />
                         <Route exact path='/books' component={() => <BookList items={this.state.books} deleteBook={(id)=>this.deleteBook(id)} />} />
+                        <Route exact path='/projects' component={() => <ProjectList projects={this.state.projects} deleteProject={(id)=>this.deleteProject(id)} />} />
                         <Route exact path='/books/create' component={() => <BookForm authors={this.state.authors} createBook={(name, author) => this.createBook(name, author)}/>} />
+                        <Route exact path='/projects/create' component={() => <ProjectForm users={this.state.users} createProject={(name, data_link, user) => this.createProject(name, data_link, user)}/>} />
+                        <Route exact path='/todos/create' component={() => <ToDoForm users={this.state.users} projects={this.state.projects} createToDo={(project, text, created_at, updated_at, user, is_active) => this.createToDo(project, text, created_at, updated_at, user, is_active)}/>} />
                         <Route path='/author/:id'><AuthorBookList items={this.state.books} /> </Route>
+                        <Route exact path='/search' component={() => <SearchForm searchProject={(name) => this.searchProject(name)}/>}/>
                         {/*    <ToDoProjectList items={this.state.project} />*/}
                         {/*</Route>*/}
                         {/*<Route path='/author/:id'>*/}

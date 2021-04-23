@@ -1,10 +1,11 @@
 import React from "react";
+import {Link} from "react-router-dom";
 
-const ProjectItem = ({project}) => {
+const ProjectItem = ({project, deleteProject}) => {
     return (
         <tr>
             <td>
-                {project.user.username}
+                {project.user}
             </td>
             <td>
                 {project.name}
@@ -12,15 +13,20 @@ const ProjectItem = ({project}) => {
             <td>
                 {project.data_link}
             </td>
+            <td>
+                <button onClick={()=>deleteProject(project.id)} type='button'>Delete</button>
+            </td>
         </tr>
     )
 }
 
-const ProjectList = ({projects}) => {
+const ProjectList = ({projects, deleteProject}) => {
     return (
+        <div>
         <table>
+            <tr>
             <th>
-                USERNAME
+                USER_ID
             </th>
             <th>
                 NAME
@@ -28,8 +34,11 @@ const ProjectList = ({projects}) => {
             <th>
                 LINK
             </th>
-            {projects.map((project) => <ProjectItem project={project} />)}
+        </tr>
+            {projects.map((project) => <ProjectItem project={project} deleteProject={deleteProject}/>)}
         </table>
+        <Link to='/projects/create'>Create</Link>
+        </div>
     )
 }
 export default ProjectList

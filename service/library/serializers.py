@@ -27,8 +27,9 @@ class ArticleSerializer(serializers.Serializer):
         exclude = ['name']
 
 
-class BookSerializer(HyperlinkedModelSerializer):
+class BookSerializer(serializers.ModelSerializer):
     # authors = serializers.StringRelatedField(many=True)
+    # author = AuthorSerializer()
 
     class Meta:
         model = Book
@@ -42,14 +43,14 @@ class BookSerializerBase(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class UserModelSerializer(HyperlinkedModelSerializer):
+class UserModelSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
         fields = ('username', 'email',)
 
 
-class UserModelSerializerVersion2(HyperlinkedModelSerializer):
+class UserModelSerializerVersion2(serializers.ModelSerializer):
 
     class Meta:
         model = User

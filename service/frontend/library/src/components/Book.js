@@ -1,6 +1,6 @@
 import React from "react";
 
-const BookItem = ({item}) => {
+const BookItem = ({item, deleteBook}) => {
     return (
         <tr>
             <td>
@@ -12,24 +12,33 @@ const BookItem = ({item}) => {
             <td>
                 {item.author.name}
             </td>
+            <td>
+                <button onClick={()=>deleteBook(item.id)} type='button'>Delete</button>
+            </td>
         </tr>
     )
 }
 
-const BookList = ({items}) => {
+const BookList = ({items, deleteBook}) => {
     return (
-        <table>
-            <th>
-                ID
-            </th>
-            <th>
-                NAME
-            </th>
-            <th>
-                AUTHOR
-            </th>
-            {items.map((item) => <BookItem item={item} />)}
-        </table>
+        <div>
+            <table>
+                <tr>
+                    <th>
+                        ID
+                    </th>
+                    <th>
+                        NAME
+                    </th>
+                    <th>
+                        AUTHOR
+                    </th>
+                    <th></th>
+                </tr>
+                {items.map((item) => <BookItem item={item} deleteBook={deleteBook} />)}
+            </table>
+            <Link to='/books/create'>Create</Link>
+        </div>
     )
 }
 export default BookList

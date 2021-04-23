@@ -82,6 +82,15 @@ class App extends React.Component{
         return headers
     }
 
+    deleteBook(id){
+        const headers = this.get_headers()
+        axios.delete(`http://127.0.0.1:8000/api/books/${id}`, {headers, headers})
+            .then(response => {
+                this.setState({books: this.state.books.filter((item) => item.id !== id)})
+            }).catch(error => console.log(error))
+    }
+
+
     load_data() {
         const headers = this.get_headers()
         axios.get('http://127.0.0.1:8000/api/authors', {headers})
@@ -104,7 +113,7 @@ class App extends React.Component{
                     )
                 }).catch(error => console.log(error)
             )
-    axios.get('http://127.0.0.1:8000/pagination/projectlimitoffset/', {headers})
+        axios.get('http://127.0.0.1:8000/pagination/projectlimitoffset/', {headers})
                 .then(response => {
                     const projects = response.data.results
                     this.setState(
@@ -114,7 +123,7 @@ class App extends React.Component{
                     )
                 }).catch(error => console.log(error)
             )
-    axios.get('http://127.0.0.1:8000/pagination/todolimitoffset/', {headers})
+        axios.get('http://127.0.0.1:8000/pagination/todolimitoffset/', {headers})
                 .then(response => {
                     const todos = response.data.results
                     this.setState(

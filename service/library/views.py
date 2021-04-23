@@ -113,8 +113,8 @@ class BookViewSet(ModelViewSet):
 
     def get_serializer_class(self):
         if self.request.method in ['GET']:
-            return BookSerializer
-        return BookSerializerBase
+            return BookSerializerBase
+        return BookSerializer
 
 
 class UserModelViewSet(ModelViewSet):

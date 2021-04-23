@@ -1,4 +1,5 @@
 import React from "react";
+import {Link} from "react-router-dom";
 
 const BookItem = ({item, deleteBook}) => {
     return (
@@ -10,7 +11,7 @@ const BookItem = ({item, deleteBook}) => {
                 {item.name}
             </td>
             <td>
-                {item.author.name}
+                {item.author}
             </td>
             <td>
                 <button onClick={()=>deleteBook(item.id)} type='button'>Delete</button>
@@ -33,7 +34,7 @@ const BookList = ({items, deleteBook}) => {
                     <th>
                         AUTHOR
                     </th>
-                    <th></th>
+                    {/*<th></th>*/}
                 </tr>
                 {items.map((item) => <BookItem item={item} deleteBook={deleteBook} />)}
             </table>

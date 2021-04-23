@@ -2,11 +2,12 @@ import React from "react"
 import {Link} from "react-router-dom"
 
 const AuthorItem = ({author}) => {
+    console.log(author)
     return (
         <tr>
-            {/*<td>*/}
-            {/*    <Link to={`author/${author.uuid}`}>{author.uuid}</Link>*/}
-            {/*</td>*/}
+            <td>
+                <Link to={`author/${author.uuid}`}>{author.uuid}</Link>
+            </td>
             <td>
                 {author.first_name}
             </td>
@@ -23,9 +24,9 @@ const AuthorItem = ({author}) => {
 const AuthorList = ({authors}) => {
     return (
         <table>
-            {/*<th>*/}
-            {/*    ID*/}
-            {/*</th>*/}
+            <th>
+                ID
+            </th>
             <th>
                 FIRST NAME
             </th>

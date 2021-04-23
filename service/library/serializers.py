@@ -4,7 +4,7 @@ from rest_framework import serializers
 from .models import Author, Biography, Article, Book
 
 
-class AuthorSerializer(HyperlinkedModelSerializer):
+class AuthorSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Author

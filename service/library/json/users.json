@@ -1,8 +1,8 @@
 [
   {
     "username": "user1",
-    "firstname": "first",
-    "lastname": "last",
+    "first_name": "first",
+    "last_name": "last",
     "email": "test@local"
   }
 ]
